@@ -1,5 +1,6 @@
 package sistema_experto.entities;
 
+import com.sun.scenario.effect.impl.sw.java.JSWBlend_DIFFERENCEPeer;
 import sistema_experto.common.RandomIO;
 
 import java.io.IOException;
@@ -43,8 +44,8 @@ public class Database {
      * Total header size: 17 bytes
      */
     private void _initDB() throws IOException {
-        this._db.file.writeLong(0L);
-        this._db.file.writeLong(0L);
+        this._db.file.writeLong(rules);
+        this._db.file.writeLong(index);
         this._db.file.writeChar('\n');
     }
 
@@ -53,8 +54,30 @@ public class Database {
      *
      * @param rule Rule to append
      */
-    public void appendRule(Rule rule) {
-
+    public void appendRule(Rule rule) throws IOException {
+        _db.file.writeByte(rule.getRuleNumber());
+        for (byte i = 0; i < Rule.MAX_RECORDS; i++){
+            _db.file.writeChar(rule.getRecord()[i]);
+        }
+        _db.file.writeByte(rule.getProduction());
+        _db.file.writeChars(rule.getDescription());
+        this.index += 1;
+        updateHeader();
     }
 
+    /**
+     * Updates the header of the database
+     *
+     * @throws IOException
+     */
+    public void updateHeader() throws IOException {
+        _db.reset();
+        this._initDB();
+    }
+
+    /**
+     * Returns the number of the last inserted rule
+     * @return
+     */
+    public long getIndex() { return index; }
 }
