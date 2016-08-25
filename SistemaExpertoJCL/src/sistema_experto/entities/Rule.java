@@ -19,6 +19,13 @@ public class Rule {
     private char[] record;
     private byte production;
     public String description;
+    /**
+     * This ones are for inner file handling, to correctly erase a rule from the file, given it's starting point and
+     * ending point.
+     * THIS MUST BE SET WHEN RULES ARE BEING LOADED
+     */
+    private long START_OFFSET;
+    private long END_OFFSET;
 
     public Rule() {
         record = new char[MAX_RECORDS];
@@ -26,6 +33,12 @@ public class Rule {
             record[i] = 0;
         marked = false;
         description = "";
+    }
+
+    public Rule(char[] record, byte production) {
+        super();
+        this.record = record;
+        this.production = production;
     }
 
     /**
@@ -76,5 +89,24 @@ public class Rule {
         return production;
     }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
+
+    public long getStartOffset() {
+        return START_OFFSET;
+    }
+
+    public void setStartOffset(long START_OFFSET) {
+        this.START_OFFSET = START_OFFSET;
+    }
+
+    public long getEndOffset() {
+        return END_OFFSET;
+    }
+
+    public void setEndOffset(long END_OFFSET) {
+        this.END_OFFSET = END_OFFSET;
+    }
+
 }
