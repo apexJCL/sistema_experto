@@ -18,13 +18,14 @@ public class Rule {
     private byte ruleNumber;
     private char[] record;
     private byte production;
-    public static String description;
+    public String description;
 
     public Rule() {
         record = new char[MAX_RECORDS];
         for (byte i = 0; i < MAX_RECORDS; i++)
             record[i] = 0;
         marked = false;
+        description = "";
     }
 
     /**
@@ -43,6 +44,10 @@ public class Rule {
         this.record = record;
         this.production = production;
         marked = false;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setRuleNumber(byte ruleNumber) {
@@ -71,7 +76,5 @@ public class Rule {
         return production;
     }
 
-    public static String getDescription() {
-        return description;
-    }
+    public String getDescription() { return description; }
 }

@@ -33,7 +33,7 @@ public class Database {
     private void _loadDB() throws IOException {
         this.index = this._db.file.readLong();
         this.rules = this._db.file.readLong();
-        this._db.file.seek(17);
+        this._db.file.seek(this._db.getSize());
     }
 
     /**

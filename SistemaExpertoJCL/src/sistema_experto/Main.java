@@ -1,17 +1,18 @@
 package sistema_experto;
 
-import sistema_experto.common.RandomIO;
 import sistema_experto.entities.Database;
 import sistema_experto.entities.Rule;
-import sistema_experto.inference_motors.ForwardChaining;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         Database db = new Database("test");
+        char[] record = {'a', 'b', 'c', 'd', 0};
+        byte number = 10;
+        byte production = 9;
+        Rule r = new Rule(number, record, production);
+        r.setDescription("Regla 1\n");
+        db.appendRule(r);
+        System.exit(0);
     }
 }
