@@ -11,6 +11,7 @@ import java.util.ArrayList;
  */
 public class Database {
 
+    private static byte HEADER_SIZE = 1;
     private RandomIO _db;
     private byte index = 0;
     public ArrayList<Rule> rules;
@@ -25,14 +26,12 @@ public class Database {
         if (this._db.newFile) {
             this.rules = new ArrayList<>(0);
             _initDB();
-        }
-        else _loadDB();
+        } else _loadDB();
     }
 
     /**
      * Loads the DB Header from the file and sets the default parameters.
      * It loads each rule that appears after the header and until the EOF
-     *
      */
     private void _loadDB() throws IOException {
         index = this._db.file.readByte();
@@ -56,7 +55,7 @@ public class Database {
             r.getRecord()[i] = _db.file.readChar();
         r.setProduction(_db.file.readByte());
         r.description = _db.file.readLine();
-        r.setEndOffset(_db.file.getFilePointer() - 1); // We leave 0A out, because each rule is delimited by a NL (0A)
+        r.setEndOffset(_db.file.getFilePointer());
         return r;
     }
 
@@ -78,14 +77,24 @@ public class Database {
      */
     public void appendRule(Rule rule) throws IOException {
         eof();
+        _writeRule(rule);
+        this.index += 1;
+        updateHeader();
+    }
+
+    /**
+     * Writes a rule to the file at the current file pointer
+     *
+     * @param rule
+     * @throws IOException
+     */
+    private void _writeRule(Rule rule) throws IOException {
         _db.file.writeByte(this.index); // Rule Number
-        for (byte i = 0; i < Rule.MAX_RECORDS; i++){
+        for (byte i = 0; i < Rule.MAX_RECORDS; i++) {
             _db.file.writeChar(rule.getRecord()[i]);
         }
         _db.file.writeByte(rule.getProduction());
         _db.file.writeChars(rule.getDescription());
-        this.index += 1;
-        updateHeader();
     }
 
     /**
@@ -101,6 +110,7 @@ public class Database {
 
     /**
      * Moves pointer to the EOF, dummy wrapper
+     *
      * @throws IOException
      */
     private void eof() throws IOException {
@@ -109,26 +119,59 @@ public class Database {
 
     /**
      * Returns the number of the last inserted rule
+     *
      * @return
      */
-    public long getIndex() { return index; }
+    public long getIndex() {
+        return index;
+    }
 
     /**
      * Deletes a rule from the file, leaving a trailing 0A for rule delimiting
      *
-     * @param r    Rule to erase
+     * @param r Rule to erase
      * @return Always true, because it overwrites the rule section with 0's
      * @throws IOException
      */
     public boolean eraseRule(Rule r) throws IOException {
-        _db.file.seek(r.getStartOffset());
-        for (long i = r.getStartOffset(); i < r.getEndOffset(); i++)
-            _db.file.writeByte(0);
+        compactDatabase(r.getStartOffset(), r.getEndOffset());
+        _db.file.setLength(_db.file.getFilePointer());
+        eof();
         return true;
     }
 
+    /**
+     * Compacts the database when a rule has been erased. DOES NOT RETURN FILE POINTER
+     *
+     * @param startOffset - Start offset of the rule
+     * @param endOffset   - End offset of the rule
+     * @throws IOException
+     */
+    private void compactDatabase(long startOffset, long endOffset) throws IOException {
+        long limit = _db.getSize();
+        byte t = 0;
+        while (endOffset < limit){
+            _db.file.seek(endOffset);
+            t = _db.file.readByte();
+            endOffset = _db.file.getFilePointer();
+            _db.file.seek(startOffset);
+            _db.file.writeByte(t);
+            startOffset = _db.file.getFilePointer();
+        }
+    }
+
     public void close() throws IOException {
+        _db.dispose();
         rules = null;
-        _db.file.close();
+    }
+
+    /**
+     * Updates a rule. This will always move the pointer to EOF
+     *
+     * @param r Rule to update
+     * @throws IOException
+     */
+    public void updateRule(Rule r) throws IOException {
+        // Calculate new rule size
     }
 }

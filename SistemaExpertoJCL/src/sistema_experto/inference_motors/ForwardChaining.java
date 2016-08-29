@@ -6,7 +6,7 @@ import sistema_experto.entities.Rule;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static sistema_experto.common.RandomIO.FileMode.*;
+import static sistema_experto.common.RandomIO.FileMode.RW;
 
 /**
  * Created by José Carlos López on 23/08/2016.
@@ -36,10 +36,10 @@ public class ForwardChaining {
      */
     public void loadRules() throws IOException {
         kdb.file.seek(0); // Resets file position (if applies)
-        while (kdb.file.getFilePointer() <= kdb.getSize()){
+        while (kdb.file.getFilePointer() <= kdb.getSize()) {
             Rule r = new Rule();  // Creates new rule
             r.setRuleNumber(kdb.file.readByte()); // Sets production
-            for (byte i = 0; i < Rule.MAX_RECORDS; i++){
+            for (byte i = 0; i < Rule.MAX_RECORDS; i++) {
                 r.getRecord()[i] = kdb.file.readChar(); // Moves 2 bytes into the char
             }
             r.setProduction(kdb.file.readByte());

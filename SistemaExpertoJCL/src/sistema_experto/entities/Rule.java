@@ -8,11 +8,25 @@ package sistema_experto.entities;
  * Production = char
  * <p>
  * Total size of a rule: 14 bytes + String
+ *
+ * About constants:
+ *
+ * Max records: Max amount of records in the char array
+ * Base rule size: Basic rule size dependant of the:
+ *  - Rule number
+ *  - Record array
+ *  - Production
+ *  This amounts to a total of 14 bytes
+ *  Null Byte: We mark a non valid
+ *
  */
 public class Rule {
 
     // Rule generic status
     public static byte MAX_RECORDS = 5;
+    public static byte BASE_RULE_SIZE = 14;
+    public static byte NULL_BYTE = 1;
+
     public boolean marked;
     // Rule properties
     private byte ruleNumber;
@@ -53,7 +67,7 @@ public class Rule {
         if (record.length > 5)
             throw new Exception("Production only can be 5 or less");
         this.ruleNumber = number;
-        this.record = new char[]{0, 0, 0, 0, 0};
+        this.record = new char[]{1, 1, 1, 1, 1};
         this.record = record;
         this.production = production;
         marked = false;
@@ -107,6 +121,18 @@ public class Rule {
 
     public void setEndOffset(long END_OFFSET) {
         this.END_OFFSET = END_OFFSET;
+    }
+
+    /**
+     * Preferrable method to assign a value to a record.
+     *
+     * We use this because we only need printable characters on the char array, we mark 'empty' as 1
+     *
+     * @param index
+     * @param value
+     */
+    public void setRecord(byte index, char value){
+        this.record[index] = value;
     }
 
 }

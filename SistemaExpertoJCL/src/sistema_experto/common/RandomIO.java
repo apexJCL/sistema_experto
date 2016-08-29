@@ -53,20 +53,34 @@ public class RandomIO {
         return !f.exists() && f.createNewFile();
     }
 
+    /**
+     * Returns the size of the file
+     *
+     * @return
+     */
     public long getSize() {
         return _file.length();
-    }
-
-    public enum FileMode {
-        R, W, RW
     }
 
     public void reset() throws IOException {
         this.file.seek(0);
     }
 
+    /**
+     * Returns if the pointer is at EOF
+     *
+     * @return
+     * @throws IOException
+     */
+    public boolean isEOF() throws IOException {
+        return file.getFilePointer() >= getSize();
+    }
+
     public void dispose() throws IOException {
         this.file.close();
     }
 
+    public enum FileMode {
+        R, W, RW
+    }
 }
