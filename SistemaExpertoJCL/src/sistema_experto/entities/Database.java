@@ -1,6 +1,5 @@
 package sistema_experto.entities;
 
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_DIFFERENCEPeer;
 import sistema_experto.common.RandomIO;
 
 import java.io.IOException;
@@ -150,7 +149,7 @@ public class Database {
     private void compactDatabase(long startOffset, long endOffset) throws IOException {
         long limit = _db.getSize();
         byte t = 0;
-        while (endOffset < limit){
+        while (endOffset < limit) {
             _db.file.seek(endOffset);
             t = _db.file.readByte();
             endOffset = _db.file.getFilePointer();
