@@ -56,7 +56,7 @@ public class RandomIO {
     /**
      * Returns the size of the file
      *
-     * @return
+     * @return Returns the size of the file
      */
     public long getSize() {
         return _file.length();

@@ -52,7 +52,7 @@ public class Database {
         r.setRuleNumber(_db.file.readByte());
         for (byte i = 0; i < Rule.MAX_RECORDS; i++)
             r.getRecord()[i] = _db.file.readChar();
-        r.setProduction(_db.file.readByte());
+        r.setProduction(_db.file.readChar());
         r.description = _db.file.readLine();
         r.setEndOffset(_db.file.getFilePointer());
         return r;
@@ -82,6 +82,19 @@ public class Database {
     }
 
     /**
+     * Reloads rules from the file.
+     *
+     * @param cached    - If the actual rules are a cache version or if all file must be re-read from disk
+     */
+    public void reloadRules(boolean cached){
+//        if (cached){
+//            rules.get(rules.) // TODO: Finish rule reload
+//        } else {
+//
+//        }
+    }
+
+    /**
      * Writes a rule to the file at the current file pointer
      *
      * @param rule
@@ -92,7 +105,7 @@ public class Database {
         for (byte i = 0; i < Rule.MAX_RECORDS; i++) {
             _db.file.writeChar(rule.getRecord()[i]);
         }
-        _db.file.writeByte(rule.getProduction());
+        _db.file.writeChar(rule.getProduction());
         _db.file.writeChars(rule.getDescription());
     }
 

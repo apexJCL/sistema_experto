@@ -8,17 +8,16 @@ package sistema_experto.entities;
  * Production = char
  * <p>
  * Total size of a rule: 14 bytes + String
- *
+ * <p>
  * About constants:
- *
+ * <p>
  * Max records: Max amount of records in the char array
  * Base rule size: Basic rule size dependant of the:
- *  - Rule number
- *  - Record array
- *  - Production
- *  This amounts to a total of 14 bytes
- *  Null Byte: We mark a non valid
- *
+ * - Rule number
+ * - Record array
+ * - Production
+ * This amounts to a total of 14 bytes
+ * Null Byte: We mark a non valid
  */
 public class Rule {
 
@@ -31,7 +30,7 @@ public class Rule {
     // Rule properties
     private byte ruleNumber;
     private char[] record;
-    private byte production;
+    private char production;
     public String description;
     /**
      * This ones are for inner file handling, to correctly erase a rule from the file, given it's starting point and
@@ -49,7 +48,7 @@ public class Rule {
         description = "";
     }
 
-    public Rule(char[] record, byte production) {
+    public Rule(char[] record, char production) {
         super();
         this.record = record;
         this.production = production;
@@ -63,7 +62,7 @@ public class Rule {
      * @param production Production
      * @throws Exception If the record array exceeds maximum size (5)
      */
-    public Rule(byte number, char[] record, byte production) throws Exception {
+    public Rule(byte number, char[] record, char production) throws Exception {
         if (record.length > 5)
             throw new Exception("Production only can be 5 or less");
         this.ruleNumber = number;
@@ -87,7 +86,7 @@ public class Rule {
         this.record = record;
     }
 
-    public void setProduction(byte production) {
+    public void setProduction(char production) {
         this.production = production;
     }
 
@@ -99,7 +98,7 @@ public class Rule {
         return ruleNumber;
     }
 
-    public byte getProduction() {
+    public char getProduction() {
         return production;
     }
 
@@ -125,13 +124,13 @@ public class Rule {
 
     /**
      * Preferrable method to assign a value to a record.
-     *
+     * <p>
      * We use this because we only need printable characters on the char array, we mark 'empty' as 1
      *
      * @param index
      * @param value
      */
-    public void setRecord(byte index, char value){
+    public void setRecord(byte index, char value) {
         this.record[index] = value;
     }
 
