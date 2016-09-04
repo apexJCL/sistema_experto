@@ -76,7 +76,7 @@ public class Database {
     }
 
     /**
-     * Compacts the database when a rule has been erased. DOES NOT RETURN FILE POINTER
+     * Compacts the database when a rule has been erased. DOES NOT RETURN FILE POINTER TO PREVIOUS POSITION
      *
      * @param startOffset - Start offset of the rule
      * @param endOffset   - End offset of the rule

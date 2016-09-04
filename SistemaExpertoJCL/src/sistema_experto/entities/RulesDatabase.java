@@ -51,14 +51,12 @@ public class RulesDatabase extends Database {
      * Deletes a rule from the file, leaving a trailing 0A for rule delimiting
      *
      * @param r Rule to erase
-     * @return Always true, because it overwrites the rule section with 0's
      * @throws IOException
      */
-    public boolean eraseRule(Rule r) throws IOException {
+    public void eraseRule(Rule r) throws IOException {
         compactDatabase(r.getStartOffset(), r.getEndOffset());
         _db.file.setLength(_db.file.getFilePointer());
         eof();
-        return true;
     }
 
 
@@ -92,14 +90,10 @@ public class RulesDatabase extends Database {
     /**
      * Reloads rules from the file.
      *
-     * @param cached    - If the actual rules are a cache version or if all file must be re-read from disk
      */
-    public void reloadRules(boolean cached){
-//        if (cached){
-//            rules.get(rules.) // TODO: Finish rule reload
-//        } else {
-//
-//        }
+    public void reloadRules() throws IOException {
+        rules.clear();
+        _loadDB();
     }
 
     /**

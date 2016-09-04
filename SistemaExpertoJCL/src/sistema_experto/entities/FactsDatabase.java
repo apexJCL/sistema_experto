@@ -1,6 +1,7 @@
 package sistema_experto.entities;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by José Carlos López on 01/09/2016.
@@ -8,6 +9,7 @@ import java.io.IOException;
 public class FactsDatabase extends Database {
 
     private static final String FILE_EXTENSION = ".fdb";
+    private ArrayList<Fact> facts;
 
     /**
      * Creates (or opens) a new "Database" based on a RandomAccessFile
@@ -20,7 +22,11 @@ public class FactsDatabase extends Database {
 
     @Override
     public void _loadDB() throws IOException {
-        super._loadDB();
+        index = this._db.file.readByte();
+        facts = new ArrayList<>(index);
+        while(!_db.isEOF())
+            facts.add(new Fact(_db.file.readChar(), _db.file.readLine()));
+        eof();
     }
 
     /**
@@ -29,7 +35,7 @@ public class FactsDatabase extends Database {
      * @param fact
      * @throws IOException
      */
-    public void _writeFact(Fact fact) throws IOException {
+    private void _writeFact(Fact fact) throws IOException {
         _db.file.writeByte(fact.getIdentifier());
         _db.file.writeChars(fact.getDescription());
     }
@@ -45,5 +51,27 @@ public class FactsDatabase extends Database {
         _writeFact(fact);
         index+=1;
         updateHeader();
+    }
+
+    /**
+     * Deletes a fact from the database
+     *
+     * @param fact
+     * @throws IOException
+     */
+    public void eraseFact(Fact fact) throws IOException {
+        compactDatabase(fact.getStartOffset(), fact.getEndOffset());
+        _db.file.setLength(_db.file.getFilePointer());
+        eof();
+    }
+
+    /**
+     * Reloads the file database again
+     *
+     * @throws IOException
+     */
+    public void reloadFacts() throws IOException {
+        facts.clear();
+        _loadDB();
     }
 }
