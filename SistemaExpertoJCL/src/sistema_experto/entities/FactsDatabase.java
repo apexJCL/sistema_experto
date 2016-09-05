@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class FactsDatabase extends Database {
 
     private static final String FILE_EXTENSION = ".fdb";
-    private ArrayList<Fact> facts;
+    public ArrayList<Fact> facts;
 
     /**
      * Creates (or opens) a new "Database" based on a RandomAccessFile

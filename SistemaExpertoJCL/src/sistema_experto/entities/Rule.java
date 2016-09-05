@@ -24,7 +24,6 @@ public class Rule {
     // Rule generic status
     public static byte MAX_RECORDS = 5;
     public static byte BASE_RULE_SIZE = 14;
-    public static byte NULL_BYTE = 1;
 
     public boolean marked;
     // Rule properties
@@ -52,6 +51,19 @@ public class Rule {
         super();
         this.record = record;
         this.production = production;
+        _sortRecord();
+    }
+
+    public void _sortRecord() {
+        for (byte i = 1; i < record.length; i++) {
+            byte j = i;
+            while (j > 0 && record[j - 1] > record[j]) {
+                record[j - 1] = (char) (record[j - 1] ^ record[j]);
+                record[j] = (char) (record[j] ^ record[j - 1]);
+                record[j - 1] = (char) (record[j - 1] ^ record[j]);
+                j -= 1;
+            }
+        }
     }
 
     /**
@@ -66,7 +78,7 @@ public class Rule {
         if (record.length > 5)
             throw new Exception("Production only can be 5 or less");
         this.ruleNumber = number;
-        this.record = new char[]{1, 1, 1, 1, 1};
+        this.record = new char[]{0, 0, 0, 0, 0};
         this.record = record;
         this.production = production;
         marked = false;
@@ -84,6 +96,7 @@ public class Rule {
         if (record.length > 5)
             throw new Exception("Production can't be more than 5");
         this.record = record;
+        _sortRecord();
     }
 
     public void setProduction(char production) {
@@ -125,7 +138,7 @@ public class Rule {
     /**
      * Preferrable method to assign a value to a record.
      * <p>
-     * We use this because we only need printable characters on the char array, we mark 'empty' as 1
+     * We use this because we only need printable characters on the char array, we mark 'empty' as 0
      *
      * @param index
      * @param value
