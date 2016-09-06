@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         ForwardChaining fc = new ForwardChaining();
         fc.setKnowledgePath("rules");
-
+        fc.setFactsPath("facts");
+        fc.init();
     }
 }

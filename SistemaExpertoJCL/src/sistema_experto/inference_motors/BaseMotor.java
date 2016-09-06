@@ -25,7 +25,7 @@ public class BaseMotor implements InferenceMotor {
     @Override
     public void init() throws IOException {
         this.fdb = new FactsDatabase(this.factsPath);
-        this.kdb = new RulesDatabase(this.factsPath);
+        this.kdb = new RulesDatabase(this.knowledgePath);
         init = true;
     }
 
@@ -48,6 +48,11 @@ public class BaseMotor implements InferenceMotor {
     @Override
     public void reloadFiles() throws IOException {
 
+    }
+
+    @Override
+    public ArrayList equate(char p_meta) {
+        return null;
     }
 
     @Override

@@ -26,6 +26,8 @@ public class BackwardChaining implements InferenceMotor{
     private ArrayList<Rule> conflictSet;
     private ArrayList<Character> NewGoals;
 
+    private char goal = 0;
+
     public BackwardChaining(){
         conflictSet = new ArrayList<Rule>(0);
         NewGoals = new ArrayList<Character>(0);
@@ -117,9 +119,14 @@ public class BackwardChaining implements InferenceMotor{
         }
         return conflictSet;
     }
-    
+
+    @Override
+    public ArrayList equate() {
+        return null;
+    }
+
     @Override
     public void setGoal(char g){
-       
+       this.goal = g;
     }
 }

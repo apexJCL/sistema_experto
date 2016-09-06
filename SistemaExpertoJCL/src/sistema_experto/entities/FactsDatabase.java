@@ -18,7 +18,7 @@ public class FactsDatabase extends Database {
      * @param filepath
      */
     public FactsDatabase(String filepath) throws IOException {
-        super(filepath);
+        super(filepath+FILE_EXTENSION);
     }
 
     @Override

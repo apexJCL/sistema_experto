@@ -52,6 +52,9 @@ public interface InferenceMotor {
      */
     ArrayList equate(char p_meta);
 
+
+    ArrayList equate();
+
     /**
     * Sets the current goal
     */
