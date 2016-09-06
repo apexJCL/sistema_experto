@@ -2,14 +2,15 @@ package sistema_experto;
 
 import sistema_experto.entities.Database;
 import sistema_experto.entities.Rule;
+import sistema_experto.entities.RulesDatabase;
+import sistema_experto.inference_motors.ForwardChaining;
+import sistema_experto.ui.UpdateModule;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Rule r = new Rule();
-        char[] test = {'x', 'a', 'e', 'b', 'o'};
-        r.setRecord(test);
-        for (char c: r.getRecord())
-            System.out.print(c);
+        ForwardChaining fc = new ForwardChaining();
+        fc.setKnowledgePath("rules");
+
     }
 }

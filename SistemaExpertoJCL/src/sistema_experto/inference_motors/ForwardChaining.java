@@ -1,9 +1,8 @@
 package sistema_experto.inference_motors;
 
-import sistema_experto.entities.FactsDatabase;
+import sistema_experto.entities.Fact;
 import sistema_experto.entities.Resolution;
-import sistema_experto.entities.RulesDatabase;
-import sistema_experto.interfaces.InferenceMotor;
+import sistema_experto.entities.Rule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,44 +10,63 @@ import java.util.ArrayList;
 /**
  * Created by José Carlos López on 04/09/2016.
  */
-public class ForwardChaining implements InferenceMotor {
+public class
+ForwardChaining extends BaseMotor {
 
-    private FactsDatabase fdb;
-    private RulesDatabase kdb;
-    private String factsPath;
-    private String knowledgePath;
-    private ArrayList<Character> conflictSet = new ArrayList<Character>(0);
+    private ArrayList<Fact> conflictSet = new ArrayList<Fact>(0);
 
     @Override
-    public void init() throws IOException {
-        this.fdb = new FactsDatabase(this.factsPath);
-        this.kdb = new RulesDatabase(this.factsPath);
+    public Resolution resolve() throws IOException {
+        super.resolve();
+        Resolution r = new Resolution();
+        if (conflictSet.isEmpty()) {
+            r.setSuccess(false);
+            return r;
+        }
+        conflictSet = equate();
+        while (!goalInFactsDatabase() && !conflictSet.isEmpty()) {
+            conflictSet = equate();
+            if (!conflictSet.isEmpty())
+                solveConflictSet();
+        }
+        return r;
     }
 
-    @Override
-    public void setFactsPath(String path) {
-        this.factsPath = path;
+    private void solveConflictSet() {
+        for (Fact f: conflictSet){
+            fdb.facts.add(f);
+            conflictSet.remove(f);
+        }
     }
 
-    @Override
-    public void setKnowledgePath(String path) {
-        this.knowledgePath = path;
-    }
-
-    @Override
-    public Resolution resolve() {
-        return null;
-    }
-
-    @Override
-    public void reloadFiles() {
-
-    }
-
+    /**
+     * Equates the facts with the rules.
+     *
+     * @return
+     */
     @Override
     public ArrayList equate() {
+        ArrayList<Fact> t = new ArrayList<>(0);
+        String facts = _sortFacts();
+        for (Rule r : kdb.rules) {
+            if (!r.marked && facts.contains(r.recordAsString())) {
+                r.marked = true;
+                t.add(new Fact(r.getProduction(), r.description));
+            }
+        }
+        return t;
+    }
 
-        return null;
+    /**
+     * Sorts the facts of the fact database
+     *
+     * @return
+     */
+    private String _sortFacts() {
+        char[] result = new char[fdb.facts.size()];
+        for (int i = 0; i < fdb.facts.size(); i++)
+            result[i] = fdb.facts.get(i).getIdentifier();
+        return new String(Rule._sortRecord(result));
     }
 
 }

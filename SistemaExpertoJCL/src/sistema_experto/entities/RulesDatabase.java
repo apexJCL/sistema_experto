@@ -25,7 +25,11 @@ public class RulesDatabase extends Database {
         index = this._db.file.readByte();
         rules = new ArrayList<>(index);
         while (_db.file.getFilePointer() < _db.getSize())
-            rules.add(_readRule());
+            try {
+                rules.add(_readRule());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         eof();
     }
 
@@ -35,12 +39,13 @@ public class RulesDatabase extends Database {
      * @return Rule
      * @throws IOException
      */
-    private Rule _readRule() throws IOException {
+    private Rule _readRule() throws Exception {
         Rule r = new Rule();
         r.setStartOffset(_db.file.getFilePointer());
         r.setRuleNumber(_db.file.readByte());
         for (byte i = 0; i < Rule.MAX_RECORDS; i++)
             r.getRecord()[i] = _db.file.readChar();
+        r.setRecord(Rule._sortRecord(r.getRecord()));
         r.setProduction(_db.file.readChar());
         r.description = _db.file.readLine();
         r.setEndOffset(_db.file.getFilePointer());

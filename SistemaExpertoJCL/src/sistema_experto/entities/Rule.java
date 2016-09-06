@@ -1,5 +1,7 @@
 package sistema_experto.entities;
 
+import java.util.ArrayList;
+
 /**
  * Class that defines a basic rule for a RBS
  * <p>
@@ -54,7 +56,16 @@ public class Rule {
         _sortRecord();
     }
 
-    public void _sortRecord() {
+    private void _sortRecord(){
+        this.record = _sortRecord(record);
+    }
+
+    /**
+     * Sorts a record in alphabetical order using insertion sort
+     * @param record
+     * @return
+     */
+    public static char[] _sortRecord(char[] record) {
         for (byte i = 1; i < record.length; i++) {
             byte j = i;
             while (j > 0 && record[j - 1] > record[j]) {
@@ -64,6 +75,7 @@ public class Rule {
                 j -= 1;
             }
         }
+        return record;
     }
 
     /**
@@ -145,6 +157,17 @@ public class Rule {
      */
     public void setRecord(byte index, char value) {
         this.record[index] = value;
+    }
+
+    /**
+     * Returns the records of a rule as a string
+     * @return
+     */
+    public String recordAsString(){
+        String t = "";
+        for (char c: record)
+            t += c != 0 ? c : "";
+        return t;
     }
 
 }

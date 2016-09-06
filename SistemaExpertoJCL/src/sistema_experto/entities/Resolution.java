@@ -1,11 +1,13 @@
 package sistema_experto.entities;
 
+import java.util.ArrayList;
+
 /**
  * Created by José Carlos López on 05/09/2016.
  */
 public class Resolution {
 
-    private char[] justification;
+    private ArrayList<Character> justification;
     private boolean success;
 
     /**
@@ -16,12 +18,16 @@ public class Resolution {
      * @param justification
      * @param success
      */
-    public Resolution(char[] justification, boolean success){
+    public Resolution(ArrayList<Character> justification, boolean success){
         this.justification = justification;
         this.success = success;
     }
 
-    public char[] getJustification() { return justification; }
+    public Resolution(){
 
-    public boolean isSuccess() { return success; }
+    }
+
+    public ArrayList<Character> getJustification() { return justification; }
+    public boolean sucess() { return success; }
+    public void setSuccess(boolean success) { this.success = success; }
 }
