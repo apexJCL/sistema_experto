@@ -50,7 +50,7 @@ public interface InferenceMotor {
      * Equates the facts with the rules and returns a conflict set
      * @return Conflict set
      */
-    ArrayList equate();
+    ArrayList equate(char p_meta);
 
     /**
     * Sets the current goal

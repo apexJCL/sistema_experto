@@ -69,4 +69,8 @@ ForwardChaining extends BaseMotor {
         return new String(Rule._sortRecord(result));
     }
 
+    @Override
+    public void setGoal(char g){
+       
+    }
 }
