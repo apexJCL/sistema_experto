@@ -37,7 +37,7 @@ public class FactsDatabase extends Database {
      * @throws IOException
      */
     private void _writeFact(Fact fact) throws IOException {
-        _db.file.writeByte(fact.getIdentifier());
+        _db.file.writeChar(fact.getIdentifier());
         _db.file.writeChars(fact.getDescription());
     }
 
