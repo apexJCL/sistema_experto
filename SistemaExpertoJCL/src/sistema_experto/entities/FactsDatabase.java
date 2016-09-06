@@ -10,6 +10,7 @@ public class FactsDatabase extends Database {
 
     private static final String FILE_EXTENSION = ".fdb";
     public ArrayList<Fact> facts;
+    private String justification;
 
     /**
      * Creates (or opens) a new "Database" based on a RandomAccessFile
@@ -73,5 +74,12 @@ public class FactsDatabase extends Database {
     public void reloadFacts() throws IOException {
         facts.clear();
         _loadDB();
+    }
+
+    public String getJustification() {
+        String justification = "";
+        for (int i = 0; i < justification.length(); i++)
+            justification += (i+1 == justification.length()) ? facts.get(i).getIdentifier() : facts.get(i).getIdentifier() + "->";
+        return justification;
     }
 }

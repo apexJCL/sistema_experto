@@ -29,6 +29,10 @@ ForwardChaining extends BaseMotor {
             if (!conflictSet.isEmpty())
                 solveConflictSet();
         }
+        if (goalInFactsDatabase()) {
+            r.setSuccess(true);
+            r.setJustification(fdb.getJustification());
+        }
         return r;
     }
 

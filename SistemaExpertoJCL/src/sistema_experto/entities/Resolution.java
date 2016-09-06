@@ -21,11 +21,13 @@ public class Resolution {
         this.success = success;
     }
 
-    public String getJustification() { return justification; }
+    public Resolution(){
 
     }
 
-    public ArrayList<Character> getJustification() { return justification; }
+    public String getJustification() { return justification; }
+    public void setJustification(String justification){ this.justification = justification; }
+
     public boolean sucess() { return success; }
     public void setSuccess(boolean success) { this.success = success; }
 }
