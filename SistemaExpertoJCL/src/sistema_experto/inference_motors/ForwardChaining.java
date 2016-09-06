@@ -51,4 +51,8 @@ public class ForwardChaining implements InferenceMotor {
         return null;
     }
 
+    @Override
+    public void setGoal(char g){
+       
+    }
 }

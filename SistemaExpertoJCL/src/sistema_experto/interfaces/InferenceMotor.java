@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public interface InferenceMotor {
 
     boolean init = false;
+    char goal = 0;
 
     /**
      * Meant to be called after setting up all the paths and before resolve.
@@ -41,7 +42,7 @@ public interface InferenceMotor {
      *
      * @return A Resolution object that contains a justification and if the process was successful or not
      */
-    Resolution resolve();
+    Resolution resolve() throws IOException;
 
     /**
      * Reloads the database files
@@ -52,6 +53,11 @@ public interface InferenceMotor {
      * Equates the facts with the rules and returns a conflict set
      * @return Conflict set
      */
-    ArrayList equate();
+    ArrayList equate(char p_meta);
+
+    /**
+    * Sets the current goal
+    */
+    void setGoal(char g);
 
 }

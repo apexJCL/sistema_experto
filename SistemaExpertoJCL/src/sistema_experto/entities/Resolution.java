@@ -5,7 +5,7 @@ package sistema_experto.entities;
  */
 public class Resolution {
 
-    private char[] justification;
+    private String justification;
     private boolean success;
 
     /**
@@ -16,12 +16,12 @@ public class Resolution {
      * @param justification
      * @param success
      */
-    public Resolution(char[] justification, boolean success){
+    public Resolution(String justification, boolean success){
         this.justification = justification;
         this.success = success;
     }
 
-    public char[] getJustification() { return justification; }
+    public String getJustification() { return justification; }
 
     public boolean isSuccess() { return success; }
 }
